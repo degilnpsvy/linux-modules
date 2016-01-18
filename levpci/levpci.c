@@ -9,6 +9,7 @@
 #include <linux/printk.h>
 #include <linux/proc_fs.h>
 #include <linux/seq_file.h>
+#include <linux/interrupt.h>
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Levente Kurusa <levex@linux.com>");
@@ -100,7 +101,10 @@ static const struct file_operations proc_fops = {
 	.llseek = seq_lseek,
 	.release = single_release,
 };
-
+static irqreturn_t levpci_interrupt(int irq, void *dev_instance)
+{
+    pr_info("levpci interrupt\n");
+}
 static int levpci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 {
 	void __iomem *mmio;
@@ -132,8 +136,18 @@ static int levpci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 
 	proc_entry = proc_create("levex", 0755, NULL, &proc_fops);
 	
+        u8 myirq=8;
+        if(pci_read_config_byte(pdev, PCI_INTERRUPT_LINE, &myirq))
+        {
+            pr_err("error read irq\n");
+        }
+        pr_info("irq number: %d\n", myirq);
+
+        request_irq(myirq, levpci_interrupt, IRQF_SHARED, "levpci", pdev);
+
 	_mmio = mmio;
 	_pdev = pdev;
+
 	return 0;
 }
 
