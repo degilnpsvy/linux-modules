@@ -1,7 +1,10 @@
 obj-m += levpci.o
 
 all:
-	make -C ${TOP_DIR}/linux M=${PWD} modules
+	make -C ${LINUX_DIR} M=`pwd` O=${LINUX_BUILD_DIR} modules
+
+install:
+	make -C ${LINUX_DIR} M=`pwd` O=${LINUX_BUILD_DIR} INSTALL_MOD_PATH=${INSTALL_MODULE_DIR} modules_install
 
 clean:
-	make -C ${TOP_DIR}/linux M=${PWD} clean
+	rm -rf *.o *~ core .depend .*.cmd *.ko *.mod.c modules.order Module.symvers .tmp_versions
