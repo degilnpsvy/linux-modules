@@ -5,9 +5,12 @@
 
 MODULE_LICENSE("GPL");
 
+static int num=0;
+module_param(num,int,S_IRUGO);
 static int __init hello_init(void)
 {
 	printk(KERN_EMERG "hello_init\n");
+	printk(KERN_EMERG "num=%d\n",num);
 	return 0;
 }
 
