@@ -17,12 +17,13 @@ void data_release(struct kref *ref)
     kfree(data);
 }
 
-void more_data_handling(void *cb_data)
+int more_data_handling(void *cb_data)
 {
     struct my_data *data=cb_data;
     data->num++;
     printk(KERN_EMERG "End of more_data_handling %d\n", data->num);
     kref_put(&data->refcount,data_release);
+    return 0;
 }
 
 int my_data_handler(void)
@@ -49,18 +50,18 @@ int my_data_handler(void)
     return rv;
 }
 
-static int __init try_kref_init(void)
+static int __init try_kref_1_init(void)
 {
-	printk(KERN_EMERG "try_kref_init\n");
+	printk(KERN_EMERG "try_kref_1_init\n");
         my_data_handler();
 	return 0;
 }
 
-static void __exit try_kref_exit(void)
+static void __exit try_kref_1_exit(void)
 {
-	printk(KERN_EMERG "try_kref_exit\n");
+	printk(KERN_EMERG "try_kref_1_exit\n");
 	return;
 }
 
-module_init(try_kref_init);
-module_exit(try_kref_exit);
+module_init(try_kref_1_init);
+module_exit(try_kref_1_exit);

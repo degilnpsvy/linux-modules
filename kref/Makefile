@@ -1,4 +1,4 @@
-obj-m += try_kref.o
+obj-m += try_kref_1.o try_kref_2.o
 
 all:
 	make -C ${LINUX_DIR} M=`pwd` O=${LINUX_BUILD_DIR} modules
