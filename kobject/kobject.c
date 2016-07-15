@@ -14,7 +14,7 @@ static ssize_t foo_show(struct kobject *kobj, struct kobj_attribute *attr, char 
     return sprintf(buf, "%d\n", foo);
 }
 
-static ssize_t foo_store(struct kobject *kobj, struct kobj_attribute *attr, char *buf, size_t count)
+static ssize_t foo_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count)
 {
     int ret;
     ret=kstrtoint(buf,10,&foo);
@@ -34,7 +34,7 @@ static ssize_t b_show(struct kobject *kobj, struct kobj_attribute *attr, char *b
     return sprintf(buf,"%d\n", var);
 }
 
-static ssize_t b_store(struct kobject *kobj, struct kobj_attribute *attr, char *buf, size_t count)
+static ssize_t b_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count)
 {
     int var,ret;
 
